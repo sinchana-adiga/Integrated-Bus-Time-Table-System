@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Integrated Bus Time Table System</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    select, button { padding: 8px; margin: 10px 0; width: 300px; }
+    pre { background: #f1f1f1; padding: 10px; border-radius: 5px; }
+    .box { border: 1px solid #ddd; padding: 15px; max-width: 600px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Integrated Bus Time Table System</h1>
+
+  <div class="box">
+    <h3>Select Bus Route</h3>
+    <select id="route">
+      <option value="">-- Select Route --</option>
+      <option value="R1">R1 – City Center → College</option>
+      <option value="R2">R2 – Railway Station → Campus</option>
+    </select>
+
+    <button id="searchBtn">Get Timetable</button>
+
+    <h3>Result:</h3>
+    <pre id="output">No data yet</pre>
+  </div>
+
+  <script>
+    document.getElementById("searchBtn").onclick = async () => {
+      const route = document.getElementById("route").value;
+      if(!route){
+        document.getElementById("output").innerText = "Select a route!";
+        return;
+      }
+      const res = await fetch("/backend/sample-bus-data.json");
+      const data = await res.json();
+      const match = data.find(r => r.routeId === route);
+      document.getElementById("output").innerText = JSON.stringify(match, null, 2);
+    };
+  </script>
+
+</body>
+</html>
